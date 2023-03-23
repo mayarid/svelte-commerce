@@ -205,27 +205,6 @@ const handlePageClick = (page) => {
 					{/if}
 				</div> -->
 
-				<!-- <div class="max-w-screen overflow-x-auto scrollbar-none lg:hidden">
-					<div class="flex flex-row">
-						{#each data.home?.categories?.data as category}
-							{#if category?.img || category?.img}
-								<a
-									href="/{category.link || category.slug || '##'}"
-									aria-label="Click to get the category related products"
-									class="shrink-0">
-									<LazyImg
-										src="{category.img || category.img}"
-										alt=""
-										width="375"
-										height="375"
-										aspect_ratio="1:1"
-										class="w-[47vw] object-contain sm:w-60" />
-								</a>
-							{/if}
-						{/each}
-					</div>
-				</div> -->
-
 				<!-- <div class="hidden grid-cols-7 lg:grid">
 					{#each data.home as product}
 						{#if product.multipleImage && product.multipleImage.length > 0}
@@ -247,6 +226,55 @@ const handlePageClick = (page) => {
 						{/if}
 					{/each}
 				</div> -->
+			</div>
+			<div class="max-w-screen overflow-x-auto scrollbar-none lg:hidden">
+				<h2
+					class="p-3 py-5 text-center font-serif text-xl font-medium uppercase tracking-wider sm:px-10 sm:text-2xl md:py-10 md:text-3xl xl:text-4xl">
+					OUR COLLECTIONS
+				</h2>
+				<div class="mx-3 md:mx-7 md:px-10">
+					<div class="grid grid-cols-3 gap-4">
+						{#each data.home as product}
+							{#if product.multipleImage && product.multipleImage.length > 0}
+								<a href="/product/{product.id}" class="relative my-7">
+									<div class="overflow-hidden rounded-md">
+										<img
+											src="{product.multipleImage[0].url}"
+											alt="{product.name}"
+											class="h-full w-full object-contain transition duration-500 hover:scale-105" />
+									</div>
+									<p class="text-xs text-gray-500 mt-2">
+										{product.category != null
+											? product.category
+											: product.type.replace('_', ' ').toUpperCase()}
+									</p>
+									<p class="text-xs md:text-lg text-gray-700 font-medium my-1">{product.name}</p>
+									<h3 class="text-xs md:text-sm font-bold">
+										{product.amount.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}
+									</h3>
+								</a>
+							{:else}
+								<a href="/product/{product.id}" class="relative my-7">
+									<div class="overflow-hidden rounded-md">
+										<img
+											src="{product.coverImage.url}"
+											alt="{product.name}"
+											class="h-full w-full object-contain transition duration-500 hover:scale-105" />
+									</div>
+									<p class="text-xs text-gray-500 mt-2">
+										{product.category != null
+											? product.category
+											: product.type.replace('_', ' ').toUpperCase()}
+									</p>
+									<p class="text-xs md:text-lg text-gray-700 font-medium my-1">{product.name}</p>
+									<h3 class="text-xs md:text-sm font-bold">
+										{product.amount.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}
+									</h3>
+								</a>
+							{/if}
+						{/each}
+					</div>
+				</div>
 			</div>
 		{/if}
 

@@ -289,7 +289,7 @@ function handleMobileCanvas() {
 
 <ProductNav me="{$page?.data?.me}" cart="{$page?.data?.cart}" store="{$page?.data?.store}">
 	<h1 class="w-28 truncate font-semibold capitalize leading-4">
-		{data.product?.brandName || `${$page?.data?.store?.websiteName}`}
+		{data.product?.name || `${$page?.data?.store?.websiteName}`}
 	</h1>
 </ProductNav>
 

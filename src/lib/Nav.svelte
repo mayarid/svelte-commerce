@@ -649,7 +649,7 @@ async function onSearchSubmit({ detail }) {
 			{:else}
 				<!-- Login -->
 
-				<a
+				<!-- <a
 					href="{$page.data?.loginUrl || '/auth/login'}?ref={$page?.url?.pathname}{$page?.url
 						?.search}"
 					aria-label="Click to route login"
@@ -672,7 +672,7 @@ async function onSearchSubmit({ detail }) {
 					</svg>
 
 					<span>Login</span>
-				</a>
+				</a> -->
 			{/if}
 		</div>
 	</aside>
