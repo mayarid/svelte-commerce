@@ -35,12 +35,24 @@ interface AllProducts {
 	facets: Facet[]
 }
 
+interface MayarSearch {
+	statusCode: number
+	messages: string
+	hasMore: boolean
+	pageCount: number
+	pageSize: number
+	page: number
+	data: MayarProduct[]
+	total: number
+}
+
 interface Facet {}
 interface EsProduct {
 	_source: Product
 }
 
 interface Product {
+	product: any
 	id?: string
 	_id: string
 	active?: boolean
@@ -151,6 +163,60 @@ interface AllOrders {
 	pageSize?: number
 	limit: number
 	data: Order[]
+}
+
+interface MayarCart {
+	statusCode: number
+	messages: string
+	data: {
+		typeCart: string
+		userId: string
+		sessionId: string
+		items: number
+		amountTotal: number
+		productItems: {
+			qty: number
+			amount: number
+			product: {
+				id: string
+				link: string
+				name: string
+				category: null | string
+				type: string
+				qty: null | number
+				amount: number
+				limit: number
+				status: string
+				userId: string
+				description: string
+				coverImageId: string
+				multipleImageId: null | string
+				multipleImage: IMultipleImage[]
+				user: {
+					id: string
+					accountId: string
+				}
+				coverImage: {
+					id: string
+					fileType: string
+					url: string
+				}
+			}
+		}[]
+	}
+}
+
+interface MayarAddToCart {
+	statusCode: number
+	messages: string
+	data: {
+		typeCart: string
+		userId: string
+		sessionId: string
+		items: number
+		amountTotal: number
+		productItems: MayarProduct[]
+	}
 }
 
 interface CartItem {
@@ -618,4 +684,57 @@ interface Wishlist {
 	store: string
 	user: string
 	variant: string
+}
+
+interface MayarAPI {
+	statusCode: number
+	messages: string
+	hasMore: boolean
+	pageCount: number
+	pageSize: number
+	page: number
+	data: MayarProduct[]
+	total: number
+}
+
+interface MayarProduct {
+	id: string
+	amount: null | number
+	category: string
+	createdAt: number
+	description: string
+	link: string
+	type: string
+	status: string
+	name: string
+	limit: null | number
+	redirectUrl: string
+	event: any
+	order: any
+	path: string
+	coverImageId: null | string
+	multipleImageId: null | string
+	multipleImage: null | IMultipleImage[]
+	coverImage: null | ICover
+	qty?: number
+}
+
+interface MayarDetailProduct {
+	statusCode: number
+	messages: string
+	data: MayarProduct
+}
+
+interface ICover {
+	id: string
+	fileType: string
+	url: string
+}
+
+interface IMultipleImage {
+	id: string
+	fileType: string
+	createdAt: Date
+	updatedAt: Date
+	url: string
 }

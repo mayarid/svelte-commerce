@@ -42,7 +42,12 @@ function submit() {
 			<div class="mt-2 flex items-center justify-between font-medium">
 				<h4>Total</h4>
 
-				<h4>{cart.formattedAmount?.subtotal || '-'}</h4>
+				<h4>
+					{cart.total.toLocaleString('id-ID', {
+						style: 'currency',
+						currency: 'IDR'
+					}) || '-'}
+				</h4>
 			</div>
 
 			{#if cart?.savings > 0}
@@ -109,7 +114,8 @@ function submit() {
 						class="group w-full uppercase"
 						loading="{loading}"
 						disabled="{disabled}"
-						on:click="{() => goto(`${nextpage}`)}">
+						on:click="{() =>
+							(window.location.href = `https://www.mayar.shop/checkout/cart/${cart?.cartId}`)}">
 						<span>{text}</span>
 
 						{#if showNextIcon}
@@ -131,7 +137,8 @@ function submit() {
 						class="w-full uppercase"
 						loading="{loading}"
 						disabled="{disabled}"
-						on:click="{submit}">
+						on:click="{() =>
+							(window.location.href = `https://www.mayar.shop/checkout/cart/${cart?.cartId}`)}">
 						<span>{text}</span>
 
 						{#if showNextIcon}
@@ -159,7 +166,8 @@ function submit() {
 						class="w-full uppercase"
 						loading="{loading}"
 						disabled="{disabled}"
-						on:click="{() => goto(`${nextpage}`)}">
+						on:click="{() =>
+							(window.location.href = `https://www.mayar.shop/checkout/cart/${cart?.cartId}`)}">
 						<span>{text}</span>
 
 						{#if showNextIcon}
@@ -182,7 +190,8 @@ function submit() {
 						class="w-full uppercase"
 						loading="{loading}"
 						disabled="{disabled}"
-						on:click="{submit}">
+						on:click="{() =>
+							(window.location.href = `https://www.mayar.shop/checkout/cart/${cart?.cartId}`)}">
 						<span>{text}</span>
 
 						{#if showNextIcon}

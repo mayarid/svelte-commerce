@@ -129,6 +129,7 @@ async function getCoupons() {
 		loadingCoupon = false
 	}
 }
+console.log(data)
 </script>
 
 <SEO {...seoProps} />
@@ -260,7 +261,7 @@ async function getCoupons() {
 
 									<div class="flex w-full items-start gap-4 py-5">
 										<a
-											href="/product/{item?.slug}"
+											href="/product/{item?.product.id}"
 											aria-label="Click to route product details"
 											class="shrink-0 ">
 											{#if item.isCustomized}
@@ -274,7 +275,9 @@ async function getCoupons() {
 											{:else}
 												<img
 													src="{getCdnImageUrl(
-														item.img
+														item.product.coverImageId
+															? item.product.coverImage.url
+															: item.product.multipleImages[0].url
 													)}?tr=w-auto,h-256,cm-pad_resize&sharpen=true"
 													alt=""
 													width="128"
@@ -285,10 +288,10 @@ async function getCoupons() {
 										<div class="w-full flex-1">
 											<div class="mb-2 flex justify-between">
 												<a
-													href="/product/{item?.slug}"
+													href="/product/{item?.product.id}"
 													aria-label="Click to route product details"
 													class="flex-1 cursor-pointer text-base font-medium text-gray-600 hover:underline sm:text-lg">
-													{item?.name}
+													{item?.product.name}
 												</a>
 
 												{#if $page?.data?.store?.isFnb && item.foodType}
@@ -303,7 +306,10 @@ async function getCoupons() {
 											</div>
 											<div class="mb-2 flex flex-wrap items-center gap-2 text-sm sm:text-base">
 												<span class="text-lg font-bold sm:text-xl">
-													{item?.formattedItemAmount?.price}
+													{item?.product.amount.toLocaleString('id-ID', {
+														style: 'currency',
+														currency: 'IDR'
+													})}
 												</span>
 
 												{#if item?.mrp > item?.price}
@@ -340,7 +346,7 @@ async function getCoupons() {
 
 											<div class="mt-4 flex items-center justify-between">
 												<div class="flex items-center justify-center">
-													<button
+													<!-- <button
 														disabled="{loading[ix]}"
 														on:click="{() =>
 															addToCart({
@@ -363,7 +369,7 @@ async function getCoupons() {
 																stroke-width="2"
 																d="M20 12H4"></path>
 														</svg>
-													</button>
+													</button> -->
 
 													<div
 														class="mx-2 flex h-6 w-6 items-center justify-center text-xs font-bold sm:h-8  sm:w-8  ">
@@ -373,11 +379,11 @@ async function getCoupons() {
 																alt="loading"
 																class="h-auto w-5 object-contain object-center" />
 														{:else}
-															<span>{item?.qty}</span>
+															<span>Quantity: {item?.qty}</span>
 														{/if}
 													</div>
 
-													<button
+													<!-- <button
 														disabled="{loading[ix]}"
 														on:click="{() =>
 															addToCart({
@@ -400,7 +406,7 @@ async function getCoupons() {
 																stroke-width="2"
 																d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
 														</svg>
-													</button>
+													</button> -->
 												</div>
 
 												<button
@@ -443,7 +449,7 @@ async function getCoupons() {
 				<div class="w-full lg:w-80 lg:shrink-0 lg:grow-0">
 					<!-- Promo code section -->
 
-					{#if data.cart?.discount?.amount > 0}
+					<!-- {#if data.cart?.discount?.amount > 0}
 						<div class="mt-3 flex w-full items-center justify-between text-sm">
 							<h5 class="flex-1 truncate text-left font-semibold">
 								Applied Coupon "{data.cart?.discount?.code}"
@@ -481,13 +487,9 @@ async function getCoupons() {
 									d="M9 5l7 7-7 7"></path>
 							</svg>
 						</button>
-					{/if}
+					{/if} -->
 
-					<Pricesummary
-						cart="{data.cart}"
-						nextpage="/checkout/address"
-						text="Select Address"
-						showNextIcon />
+					<Pricesummary cart="{data.cart}" text="Checkout" showNextIcon />
 				</div>
 			</div>
 

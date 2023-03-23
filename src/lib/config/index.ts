@@ -17,9 +17,9 @@ export const loginUrl = '/auth/login'
 export const weightUnit = 'g'
 export const currencyCode = 'USD'
 export const currencySymbol = '$'
-export const DOMAIN = env.PUBLIC_DOMAIN || 'demo.litekart.in'
+export const DOMAIN = env.PUBLIC_DOMAIN || 'http://localhost:3000'
 export const entity = 'Misiki'
-export const HTTP_ENDPOINT = env.PUBLIC_HTTP_ENDPOINT || 'https://api.litekart.in'
+export const HTTP_ENDPOINT = env.PUBLIC_HTTP_ENDPOINT || 'https://api.mayar.club'
 export const IMAGE_CDN_URL = 'https://ik.imagekit.io/3wzatecz51w3i'
 export const mediaqueries = {
 	xs: '(min-width: 480px)',
@@ -47,6 +47,7 @@ export const sorts = [
 	{ name: `Name: Asc`, val: 'name' },
 	{ name: `Name: Desc`, val: '-name' } // { name: 'Most Viewed', val: '-views' }
 ]
+export const logo = 'https://framerusercontent.com/images/0aaSOxupKAsVA4ou30WbxLvSQo0.png'
 export const WWW_URL = env.PUBLIC_WWW_URL
 export const listOfPagesWithoutBackButton = [
 	'/',

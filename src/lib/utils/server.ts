@@ -45,6 +45,7 @@ export async function postt(endpoint: string, data: any, ck?: any) {
 	if (res?.status > 399) {
 		throw { status: res.status, message: res }
 	} else if (response?.status > 399) {
+		console.log('Error 1')
 		throw { status: response.status, message: res }
 	} else {
 		return res
@@ -60,6 +61,8 @@ export const delBySid = async (endpoint: string, sid?: any) => {
 	const isJson = response.headers.get('content-type')?.includes('application/json')
 	const res = isJson ? await response.json() : await response.text()
 	if (response?.status > 399) {
+		console.log('Error 2')
+
 		throw { status: response.status, message: response.statusText }
 	} else {
 		return res
@@ -83,6 +86,7 @@ export async function postBySid(endpoint: string, data: any, sid?: string) {
 	if (res?.status > 399) {
 		throw { status: res.status, message: res }
 	} else if (response?.status > 399) {
+		console.log('Error 3')
 		throw { status: response.status, message: res }
 	} else {
 		return res
@@ -116,6 +120,7 @@ export const getBySid = async (endpoint: string, sid?: any) => {
 	const isJson = response.headers.get('content-type')?.includes('application/json')
 	const res = isJson ? await response.json() : await response.text()
 	if (response?.status > 399) {
+		console.log('Error 5')
 		throw { status: response.status, message: response.statusText }
 	} else {
 		return res
@@ -238,5 +243,47 @@ export const postWooCommerceApi = async (endpoint: string, query: any, sid?: any
 		// }
 	} catch (e) {
 		// console.log('eeeeeeeeeeeeee', e.message)
+	}
+}
+
+export const getMayarApi = async (endpoint: string) => {
+	const response = await fetch('https://api.mayar.club' + '/' + endpoint, {
+		method: 'GET',
+		headers: {
+			Authorization:
+				'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxNGUyOWU2Ni00NmNhLTQzZDctOWM4YS1mYWMwMTY2NzViZmYiLCJhY2NvdW50SWQiOiJiNDE3MWIyNy1jYWVkLTRiZGUtYjNkMi05ODZiYWNlMzkyMjciLCJjcmVhdGVkQXQiOiIxNjc2NTIyMTc4OTI2Iiwicm9sZSI6ImRldmVsb3BlciIsInN1YiI6ImRlbHZpZXJvbmlnZWxAZ21haWwuY29tIiwibmFtZSI6Im5pZ2VsZGVsdmllcm8iLCJsaW5rIjoibmlnZWwiLCJpc1NlbGZEb21haW4iOm51bGwsImlhdCI6MTY3NjUyMjE3OH0.dXZFa5kcMLjhPu7GaaLUsRoh5hLRF4QA78UT-iT2VbREev3mvEIsUqc-xKc6C9FQaiLHDAvwC-oD05wzFhmv3lQV1UVtXGoJG0GC4Eumb-UX3QR6-glHyQaIPj2USlPug6wrBo1CKoM5l7LiPiqVPcr3vro0zZJzrK-gFZ15CBDYcVdEWw-9VLnpNj21RUbbPEnLdv8o283XHJ0_KmHINH0JY2x2hHW-Mb77ZZcU3qwBkYpG8ZXDQeMsf4zeoOhbVAtGtFOK9EzjXrEU2hHNbaAdlA50019IAgC8P0NRj8odTi3CPnl6UOUTVQvh9D3UwO3yLUKQ0l_vnjDfZKao8w'
+		}
+	})
+
+	// const isJson = response.headers.get('content-type')?.includes('application/json')
+	const res = await response.json()
+	if (res?.status > 399) {
+		throw { status: res.status, message: res }
+	} else if (response?.status > 399) {
+		throw { status: response.status, message: res }
+	} else {
+		return res
+	}
+}
+
+export const postMayarApi = async (endpoint: string, body: any) => {
+	const response = await fetch('https://api.mayar.club' + '/' + endpoint, {
+		method: 'POST',
+		headers: {
+			Authorization:
+				'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxNGUyOWU2Ni00NmNhLTQzZDctOWM4YS1mYWMwMTY2NzViZmYiLCJhY2NvdW50SWQiOiJiNDE3MWIyNy1jYWVkLTRiZGUtYjNkMi05ODZiYWNlMzkyMjciLCJjcmVhdGVkQXQiOiIxNjc2NTIyMTc4OTI2Iiwicm9sZSI6ImRldmVsb3BlciIsInN1YiI6ImRlbHZpZXJvbmlnZWxAZ21haWwuY29tIiwibmFtZSI6Im5pZ2VsZGVsdmllcm8iLCJsaW5rIjoibmlnZWwiLCJpc1NlbGZEb21haW4iOm51bGwsImlhdCI6MTY3NjUyMjE3OH0.dXZFa5kcMLjhPu7GaaLUsRoh5hLRF4QA78UT-iT2VbREev3mvEIsUqc-xKc6C9FQaiLHDAvwC-oD05wzFhmv3lQV1UVtXGoJG0GC4Eumb-UX3QR6-glHyQaIPj2USlPug6wrBo1CKoM5l7LiPiqVPcr3vro0zZJzrK-gFZ15CBDYcVdEWw-9VLnpNj21RUbbPEnLdv8o283XHJ0_KmHINH0JY2x2hHW-Mb77ZZcU3qwBkYpG8ZXDQeMsf4zeoOhbVAtGtFOK9EzjXrEU2hHNbaAdlA50019IAgC8P0NRj8odTi3CPnl6UOUTVQvh9D3UwO3yLUKQ0l_vnjDfZKao8w',
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(body)
+	})
+
+	// const isJson = response.headers.get('content-type')?.includes('application/json')
+	const res = await response.json()
+	if (res?.status > 399) {
+		throw { status: res.status, message: res }
+	} else if (response?.status > 399) {
+		throw { status: response.status, message: res }
+	} else {
+		return res
 	}
 }

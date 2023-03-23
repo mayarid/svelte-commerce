@@ -1,8 +1,14 @@
 import { provider } from '$lib/config'
-import type { Error } from '$lib/types'
+import type { Error, MayarAPI } from '$lib/types'
 import { mapMedusajsCategory } from '$lib/utils'
 import { getAPI } from '$lib/utils/api'
-import { getBigCommerceApi, getBySid, getMedusajsApi, getWooCommerceApi } from '$lib/utils/server'
+import {
+	getBigCommerceApi,
+	getBySid,
+	getMedusajsApi,
+	getWooCommerceApi,
+	getMayarApi
+} from '$lib/utils/server'
 import { serializeNonPOJOs } from '$lib/utils/validations'
 import { error } from '@sveltejs/kit'
 
@@ -65,6 +71,14 @@ export const fetchCategory = async ({ origin, slug, id, server = false, sid = nu
 			case 'woocommerce':
 				res = await getWooCommerceApi(`categories`, {}, sid)
 				break
+			case 'mayar':
+				const mayarResultAPI: MayarAPI = await getMayarApi('hl/v1/product')
+				mayarResultAPI.data.map((result, index) => {
+					let currentCat = ''
+					if (currentCat !== result.category) {
+						res
+					}
+				})
 		}
 		return res || {}
 	} catch (e) {

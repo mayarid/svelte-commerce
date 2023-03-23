@@ -96,7 +96,7 @@ export function truncate(text: string, stop: number, clamp: string) {
 	else return ''
 }
 
-export function currency(value: any, currency = '$', decimals?: number) {
+export function currency(value: any, currency = 'Rp.', decimals?: number) {
 	const digitsRE = /(\d{3})(?=\d)/g
 	value = parseFloat(value)
 	if (!isFinite(value) || (!value && value !== 0)) return ''

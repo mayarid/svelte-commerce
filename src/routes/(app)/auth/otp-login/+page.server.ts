@@ -91,6 +91,7 @@ const verifyOtp: Action = async ({ cookies, request, locals }) => {
 				server: true,
 				sid: cookies.get('connect.sid')
 			})
+			console.log(`cart res: ${cartRes}`)
 			const cart = {
 				cartId: cartRes.cart_id,
 				items: cartRes.items,

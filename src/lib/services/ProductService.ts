@@ -5,7 +5,8 @@ import {
 	getBySid,
 	getMedusajsApi,
 	getWooCommerceApi,
-	postMedusajsApi
+	postMedusajsApi,
+	getMayarApi
 } from '$lib/utils/server'
 import {
 	mapBigcommerceProducts,
@@ -15,7 +16,14 @@ import {
 } from '$lib/utils'
 import { provider } from '$lib/config'
 import { serializeNonPOJOs } from '$lib/utils/validations'
-import type { AllProducts, Error, Product } from '$lib/types'
+import type {
+	AllProducts,
+	Error,
+	MayarAPI,
+	MayarDetailProduct,
+	MayarSearch,
+	Product
+} from '$lib/types'
 
 // Search product
 
@@ -28,45 +36,72 @@ export const searchProducts = async ({
 	sid = null
 }: any) => {
 	try {
-		let res: AllProducts | {} = {}
+		let allProduct: AllProducts | {} = {}
 		let products: Product[] = []
 		let count = 0
 		let facets = ''
 		let pageSize = 0
 		let category = ''
 		let err = ''
-		switch (provider) {
-			case 'litekart':
-				if (server) {
-					res = await getBySid(`es/products?${query}&store=${storeId}`, sid)
-				} else {
-					res = await getAPI(`es/products?${query}&store=${storeId}`, origin)
+
+		const res: MayarSearch = await getMayarApi(`hl/v1/product/07e9d941-1538-41f7-b01d-ad251e4d3b63`)
+		if (res.data.length > 0) {
+			res.data.map((productItem) => {
+				let product: Product = {
+					id: productItem.id,
+					_id: productItem.id,
+					active: true,
+					barcode: '',
+					countryOfOrigin: '',
+					description: productItem.description,
+					discount: 0,
+					ean: '',
+					hasStock: productItem.qty > 0 ? true : false,
+					height: 96,
+					hsn: '',
+					images: [],
+					img: '',
+					isCustomized: false,
+					mrp: 0,
+					name: productItem.name,
+					new: true,
+					price: productItem.amount,
+					sku: '',
+					slug: productItem.link,
+					status: '',
+					stock: productItem.qty,
+					weight: 200,
+					width: 75,
+					categoryPool: undefined,
+					tags: []
 				}
-				res = res || {}
-				products = res.data.map((p) => {
-					const p1 = { ...p._source }
-					p1.id = p._id
-					return p1
-				})
-				count = res?.count
-				facets = res?.facets
-				pageSize = res?.pageSize
-				err = !res?.estimatedTotalHits ? 'No result Not Found' : null
-				break
-			case 'medusajs':
-				res = await postMedusajsApi(`products/search?q=${searchData}`, {}, sid)
-				products = res?.products
-				count = res?.count
-				facets = res?.facets || []
-				pageSize = res?.pageSize || 25
-				break
-			case 'bigcommerce':
-				res = await getBigCommerceApi(`products?${query}`, {}, sid)
-				break
-			case 'woocommerce':
-				res = await getWooCommerceApi(`products?${query}`, {}, sid)
-				break
+
+				if (productItem.multipleImage.length > 0) {
+					productItem.multipleImage.map((img) => {
+						product.images.push(img.url)
+					})
+				}
+
+				if (productItem.coverImage) {
+					product.img = productItem.coverImage.url
+				}
+
+				products.push(product)
+			})
 		}
+
+		allProduct = {
+			count: res.data.length,
+			currentPage: res.page,
+			pageSize: res.pageSize,
+			limit: res.pageCount,
+			products: products,
+			facets: []
+		}
+
+		count = res.pageCount
+		pageSize = res.pageSize
+		console.log({ products, count, facets, pageSize, err })
 		return { products, count, facets, pageSize, err }
 	} catch (e) {
 		throw error(e.status, e.data?.message || e.message)
@@ -77,26 +112,7 @@ export const searchProducts = async ({
 
 export const fetchProducts = async ({ origin, slug, id, server = false, sid = null }: any) => {
 	try {
-		let res: AllProducts | {} = {}
-		switch (provider) {
-			case 'litekart':
-				if (server) {
-					res = await getBySid(`products?store=${storeId}`, sid)
-				} else {
-					res = await getAPI(`products?store=${storeId}`, origin)
-				}
-				break
-			case 'medusajs':
-				const med = (await getMedusajsApi(`products`, {}, sid)).product
-				res = mapMedusajsAllProducts(med)
-				break
-			case 'bigcommerce':
-				res = await getBigCommerceApi(`products`, {}, sid)
-				break
-			case 'woocommerce':
-				res = await getWooCommerceApi(`products`, {}, sid)
-				break
-		}
+		const res: MayarAPI = await getMayarApi('hl/v1/product')
 
 		return res?.data || []
 	} catch (e) {
@@ -106,33 +122,68 @@ export const fetchProducts = async ({ origin, slug, id, server = false, sid = nu
 
 // Fetch single product
 
-export const fetchProduct = async ({ origin, slug, id, server = false, sid = null }: any) => {
+export const fetchProduct = async ({ slug }: { slug: string }) => {
 	try {
-		let res: Product | {} = {}
-		switch (provider) {
-			case 'litekart':
-				if (server) {
-					res = await getBySid(`products/${slug}`, sid)
-				} else {
-					res = await getAPI(`products/${slug}`, origin)
-				}
-				break
-			case 'medusajs':
-				const med = (await getMedusajsApi(`products/${id}`, {}, sid)).product
-				res = mapMedusajsProduct(med)
-				break
-			case 'bigcommerce':
-				const bi = (await getBigCommerceApi(`products/${id}`, {}, sid)).data
-				const images = (await getBigCommerceApi(`products/${id}/images`, {}, sid)).data
-				bi.images = images
-				res = mapBigcommerceProducts(bi)
-				break
-			case 'woocommerce':
-				const wo = (await getWooCommerceApi(`products/${id}`, {}, sid)).data
-				res = mapWoocommerceProducts(wo)
-				break
+		const res: MayarDetailProduct = await getMayarApi(`hl/v1/product/${slug}`)
+		let product: Product | {} = {}
+
+		if (res.data.type === 'physical_product') {
+			product = {
+				id: res.data.id,
+				_id: res.data.id,
+				active: true,
+				barcode: '',
+				countryOfOrigin: '',
+				description: res.data.description,
+				discount: 0,
+				ean: '',
+				hasStock: res.data.qty > 0 ? true : false,
+				height: 96,
+				hsn: '',
+				images: res.data.multipleImage,
+				img: res.data.coverImage,
+				isCustomized: false,
+				mrp: 0,
+				name: res.data.name,
+				new: true,
+				price: res.data.amount,
+				sku: '',
+				slug: res.data.link,
+				status: '',
+				stock: res.data.qty,
+				weight: 200,
+				width: 75
+			}
+		} else {
+			product = {
+				id: res.data.id,
+				_id: res.data.id,
+				active: true,
+				barcode: '',
+				countryOfOrigin: '',
+				description: res.data.description,
+				discount: 0,
+				ean: '',
+				hasStock: res.data.limit > 0 ? true : false,
+				height: 96,
+				hsn: '',
+				images: [res.data.coverImage],
+				img: res.data.coverImage,
+				isCustomized: false,
+				mrp: 0,
+				name: res.data.name,
+				new: true,
+				price: res.data.amount,
+				sku: '',
+				slug: res.data.link,
+				status: '',
+				stock: res.data.qty,
+				weight: 200,
+				width: 75
+			}
 		}
-		return res || {}
+
+		return product || {}
 	} catch (e) {
 		throw error(e.status, e.data?.message || e.message)
 	}

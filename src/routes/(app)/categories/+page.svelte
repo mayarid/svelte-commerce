@@ -92,7 +92,7 @@ function toggle2(cx) {
 							{#if m.children?.length}
 								<button
 									type="button"
-									class="flex h-24 w-full items-end justify-between focus:outline-none 
+									class="flex h-24 w-full items-end justify-between focus:outline-none
 									{bgColors[mx]}">
 									<div class="flex h-full w-full flex-1 items-center gap-2 px-6">
 										<a

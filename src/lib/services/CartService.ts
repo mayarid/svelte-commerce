@@ -1,18 +1,21 @@
 import { provider } from '$lib/config'
-import type { Error } from '$lib/types'
+import type { Error, MayarAddToCart, MayarCart, Product } from '$lib/types'
 import { del, getAPI, post } from '$lib/utils/api'
 import {
 	getBigCommerceApi,
 	getBySid,
+	getMayarApi,
 	getMedusajsApi,
 	getWooCommerceApi,
 	postBySid,
+	postMayarApi,
 	postt
 } from '$lib/utils/server'
 import { serializeNonPOJOs } from '$lib/utils/validations'
 import { error } from '@sveltejs/kit'
 
 export const fetchCartData = async ({ origin, storeId, server = false, sid = null }: any) => {
+	console.log('fetchCartData')
 	try {
 		let res: any = {}
 		switch (provider) {
@@ -40,27 +43,24 @@ export const fetchCartData = async ({ origin, storeId, server = false, sid = nul
 	}
 }
 
-export const fetchRefreshCart = async ({ origin, storeId, server = false, sid = null }: any) => {
+export const fetchRefreshCart = async ({ cartId }: any) => {
+	console.log('fetchRefreshCart')
+	console.log(cartId)
+
 	try {
-		let res: any = {}
-		switch (provider) {
-			case 'litekart':
-				if (server) {
-					res = await getBySid(`carts/refresh-cart?store=${storeId}`, sid)
-					// res = await getBySid(`carts/my?store=${storeId}`, sid)
-				} else {
-					res = await getAPI(`carts/refresh-cart?store=${storeId}`, origin)
-				}
-				break
-			case 'medusajs':
-				res = await getMedusajsApi(`customers/me`, {}, sid)
-				break
-			case 'bigcommerce':
-				res = await getBigCommerceApi(`carts/refresh-cart`, {}, sid)
-				break
-			case 'woocommerce':
-				res = await getWooCommerceApi(`carts/refresh-cart`, {}, sid)
-				break
+		const getCart: MayarCart = await getMayarApi(`hl/v1/cart?sessionId=${cartId}`)
+		if (!cartId) {
+			console.log('cartId undefined')
+		}
+
+		const res = {
+			cart_id: cartId,
+			items: getCart.data.productItems,
+			qty: getCart.data.items,
+			tax: 0,
+			subtotal: 0,
+			total: getCart.data.amountTotal,
+			currencySymbol: 'Rp.'
 		}
 		return res || {}
 	} catch (err) {
@@ -70,6 +70,7 @@ export const fetchRefreshCart = async ({ origin, storeId, server = false, sid = 
 }
 
 export const fetchMyCart = async ({ origin, storeId, server = false, sid = null }: any) => {
+	console.log('fetchMyCart')
 	try {
 		let res: any = {}
 		switch (provider) {
@@ -98,58 +99,33 @@ export const fetchMyCart = async ({ origin, storeId, server = false, sid = null 
 	}
 }
 
-export const addToCartService = async ({
-	pid,
-	vid,
-	qty,
-	customizedImg,
-	origin,
-	storeId,
-	server = false,
-	sid = null
-}: any) => {
+export const addToCartService = async ({ pid, cartId }: any) => {
 	try {
 		let res: any = {}
-		switch (provider) {
-			case 'litekart':
-				if (server) {
-					res = await postt(
-						`carts/add-to-cart`,
-						{
-							pid,
-							vid,
-							qty,
-							customizedImg,
-							store: storeId
-						},
-						sid
-					)
-				} else {
-					res = await post(
-						`carts/add-to-cart`,
-						{
-							pid,
-							vid,
-							qty,
-							customizedImg,
-							store: storeId
-						},
-						origin
-					)
-				}
-				break
-			case 'medusajs':
-				res = await getMedusajsApi(`customers/me`, {}, sid)
-				break
-			case 'bigcommerce':
-				res = await getBigCommerceApi(`carts/add-to-cart`, {})
-				break
-			case 'woocommerce':
-				res = await getWooCommerceApi(`carts/add-to-cart`, {})
-				break
+		console.log(cartId)
+
+		if (!cartId) {
+			console.log('cartId undefined')
 		}
-		return res || {}
+
+		const getCart: MayarAddToCart = await postMayarApi(`hl/v1/cart/add`, {
+			id: pid,
+			sessionId: cartId
+		})
+
+		res = {
+			cart_id: cartId,
+			items: getCart.data.productItems,
+			qty: getCart.data.items,
+			tax: 0,
+			subtotal: 0,
+			total: getCart.data.amountTotal,
+			currencySymbol: 'Rp.'
+		}
+
+		return res
 	} catch (e) {
+		console.error(e.messages)
 		throw error(e.status, e.data?.message || e.message)
 	}
 }

@@ -10,11 +10,12 @@ export async function load({ params, parent, url, cookies, locals, request }) {
 	let product: Product | {} = {}
 
 	try {
-		product = await fetchProduct({ slug, id, server: true })
+		product = await fetchProduct({ slug })
 		if (!product) throw error(404, 'Product not found')
 		// cookies.set('cache-control', 'public, max-age=200')
 		return { product, deliveryDetails: zip }
 	} catch (e) {
+		console.log('Error Product')
 		throw error(e.status, e.message || 'Not found')
 	}
 }

@@ -33,9 +33,10 @@ export const handle: Handle = async ({ event, resolve }) => {
 		event.locals.isDesktop = isDesktop
 		const isShowBackButton = !listOfPagesWithoutBackButton.includes(url?.pathname)
 		event.locals.isShowBackButton = isShowBackButton
-		event.locals.store = await fetchStoreData(event)
-		event.locals.me = await authenticateUser(event)
+		// event.locals.store = await fetchStoreData(event)
+		// event.locals.me = await authenticateUser(event)
 		event.locals.cart = await fetchCart(event)
+
 		// Bellow conversion is for medusajs
 		// const derivedSid: string = event.cookies.get('connect.sid') || ''
 		// event.locals.sid = derivedSid
@@ -43,7 +44,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 		// event.request.headers.delete('connection')
 		return await resolve(event)
 	} catch (e) {
-		const err = `Store Not Found @Hook 
+		const err = `Store Not Found @Hook
 			<br/>ID: ${event.locals.store?.id}
 			<br/>ORIGIN: ${event.locals?.origin}
 			<br/>DOMAIN(env): ${DOMAIN}

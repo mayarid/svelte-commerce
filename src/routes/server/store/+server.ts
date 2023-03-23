@@ -2,43 +2,44 @@ import { DOMAIN, IS_DEV } from '$lib/config'
 import { getBySid } from '$lib/utils/server'
 // @ts-ignore
 export async function GET({ request, cookies, locals }) {
-	const uri = new URL(request.url)
+	// const uri = new URL(request.url)
 	// console.log('zzzzzzzzzzzzzzzzzz', `init?domain=${IS_DEV ? DOMAIN : uri.host}`)
-	const storeRes = await getBySid(`init?domain=${IS_DEV ? DOMAIN : uri.host}`)
-	const { storeOne, settings, popularSearches, megamenu } = storeRes
+	// console.log('storeRes')
+	// const storeRes = await getBySid(`init?domain=${IS_DEV ? DOMAIN : uri.host}`)
+	// const { storeOne, settings, popularSearches, megamenu } = storeRes
 	const store = {
-		id: storeOne?._id,
-		domain: storeOne?.domain,
-		email: storeOne?.websiteEmail,
-		address: storeOne?.address,
-		phone: storeOne?.phone,
-		otpLogin: storeOne?.otpLogin || true,
-		loginUrl: storeOne?.otpLogin ? '/auth/otp-login' : '/auth/login',
-		websiteLegalName: storeOne?.websiteLegalName,
-		websiteName: storeOne?.websiteName,
-		title: storeOne?.title,
-		description: storeOne?.description,
-		keywords: storeOne?.keywords,
-		stripePublishableKey: storeOne?.stripePublishableKey,
-		logo: storeOne?.logo,
-		facebookPage: storeOne?.facebookPage,
-		instagramPage: storeOne?.instagramPage,
-		twitterPage: storeOne?.twitterPage,
-		linkedinPage: storeOne?.linkedinPage,
-		pinterestPage: storeOne?.pinterestPage,
-		youtubeChannel: storeOne?.youtubeChannel,
-		GOOGLE_CLIENT_ID: storeOne?.GOOGLE_CLIENT_ID,
-		GOOGLE_ANALYTICS_ID: storeOne?.GOOGLE_ANALYTICS_ID,
-		DOMAIN: storeOne?.DOMAIN,
-		closed: storeOne?.closed,
-		closedMessage: storeOne?.closedMessage,
-		isFnb: storeOne?.isFnb,
-		searchbarText: storeOne?.searchbarText,
-		adminUrl: storeOne?.adminUrl || settings?.adminUrl, // storeOne?.adminUrl used for arialmall
-		currencySymbol: storeOne?.storeCurrency?.symbol || '$',
-		currencyCode: storeOne?.storeCurrency?.isoCode || 'USD'
+		id: 1,
+		domain: '',
+		email: '',
+		address: '',
+		phone: '',
+		otpLogin: '',
+		loginUrl: '',
+		websiteLegalName: 'Mayar Commerce',
+		websiteName: 'Mayar Commerce',
+		title: 'Mayar Commerce',
+		description: '',
+		keywords: '',
+		stripePublishableKey: '',
+		logo: 'https://framerusercontent.com/images/0aaSOxupKAsVA4ou30WbxLvSQo0.png',
+		facebookPage: '',
+		instagramPage: '',
+		twitterPage: '',
+		linkedinPage: '',
+		pinterestPage: '',
+		youtubeChannel: '',
+		GOOGLE_CLIENT_ID: '',
+		GOOGLE_ANALYTICS_ID: '',
+		DOMAIN: '',
+		closed: '',
+		closedMessage: '',
+		isFnb: false,
+		searchbarText: '',
+		adminUrl: '', // storeOne?.adminUrl used for arialmall
+		currencySymbol: 'Rp.',
+		currencyCode: 'IDR'
 	}
 	locals.store = store
 	cookies.set('store', JSON.stringify(store), { path: '/' })
-	return new Response(JSON.stringify({ storeOne, settings, popularSearches, megamenu }))
+	return new Response()
 }

@@ -26,7 +26,7 @@ let seoProps = {
 	// addressRegion: 'Odisha',
 	// alternateJsonHref: '',
 	// alternateXml: { title: '', href: '' },
-	brand: $page.data.store?.title,
+	brand: 'Mayar Commerce',
 	// breadcrumbs: '',
 	caption: $page.data.store?.title,
 	category: $page.data.store?.title,
@@ -39,8 +39,8 @@ let seoProps = {
 	// gtin: '',
 	// height: '',
 	id: $page?.url?.href,
-	image: $page.data.store?.logo,
-	logo: $page.data.store?.logo,
+	image: 'https://framerusercontent.com/images/0aaSOxupKAsVA4ou30WbxLvSQo0.png',
+	logo: 'https://framerusercontent.com/images/0aaSOxupKAsVA4ou30WbxLvSQo0.png',
 	ogSquareImage: { url: '', width: 56, height: 56 },
 	openingHours: ['Monday,Tuesday,Wednesday,Thursday,Friday,Saturday 08:00-13:00'],
 	// popularity: product.popularity,
@@ -92,9 +92,20 @@ $: heroBanners =
 	data.home?.banners?.data.filter((b) => {
 		return b.type === 'hero'
 	})
+
+export let currentPage = 1
+export let totalPages = 10
+
+const handlePageClick = (page) => {
+	currentPage = page
+}
 </script>
 
 <SEO {...seoProps} />
+
+<svelte:head>
+	<title>Mayar Commerce</title>
+</svelte:head>
 
 <div class="bg-opacity-25 bg-center bg-repeat">
 	<div class="mb-14 sm:mb-0">
@@ -122,14 +133,79 @@ $: heroBanners =
 
 		<!-- TOP CATEGORIES -->
 
-		{#if data.home?.categories?.data?.length > 0}
+		{#if data.home.length > 0}
 			<div class="mb-5 hidden sm:mb-10 sm:block">
 				<h2
 					class="p-3 py-5 text-center font-serif text-xl font-medium uppercase tracking-wider sm:px-10 sm:text-2xl md:py-10 md:text-3xl xl:text-4xl">
-					TOP COLLECTIONS
+					OUR COLLECTIONS
 				</h2>
+				<div class="mx-7 px-10">
+					<div class="grid grid-cols-3 gap-4">
+						{#each data.home as product}
+							{#if product.multipleImage && product.multipleImage.length > 0}
+								<a href="/product/{product.id}" class="relative my-7">
+									<div class="overflow-hidden rounded-md">
+										<img
+											src="{product.multipleImage[0].url}"
+											alt="{product.name}"
+											class="h-full w-full object-contain transition duration-500 hover:scale-105" />
+									</div>
+									<p class="text-xs text-gray-500 mt-2">
+										{product.category != null
+											? product.category
+											: product.type.replace('_', ' ').toUpperCase()}
+									</p>
+									<p class="text-lg text-gray-700 font-medium my-1">{product.name}</p>
+									<h3 class="text-sm font-bold">
+										{product.amount.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}
+									</h3>
+								</a>
+							{:else}
+								<a href="/product/{product.id}" class="relative my-7">
+									<div class="overflow-hidden rounded-md">
+										<img
+											src="{product.coverImage.url}"
+											alt="{product.name}"
+											class="h-full w-full object-contain transition duration-500 hover:scale-105" />
+									</div>
+									<p class="text-xs text-gray-500 mt-2">
+										{product.category != null
+											? product.category
+											: product.type.replace('_', ' ').toUpperCase()}
+									</p>
+									<p class="text-lg text-gray-700 font-medium my-1">{product.name}</p>
+									<h3 class="text-sm font-bold">
+										{product.amount.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}
+									</h3>
+								</a>
+							{/if}
+						{/each}
+					</div>
+				</div>
 
-				<div class="max-w-screen overflow-x-auto scrollbar-none lg:hidden">
+				<div class="flex justify-center items-center space-x-2">
+					{#if currentPage > 1}
+						<button
+							class="bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded"
+							on:click="{() => handlePageClick(currentPage - 1)}">Prev</button>
+					{/if}
+
+					{#each Array.from({ length: totalPages }, (_, i) => i + 1) as page}
+						<button
+							class="{currentPage === page
+								? 'bg-blue-500 text-white'
+								: 'bg-gray-100 hover:bg-gray-200 text-gray-700'} px-2 py-1 rounded"
+							on:click="{() => handlePageClick(page)}">{page}</button>
+					{/each}
+
+					{#if currentPage < totalPages}
+						<button
+							class="bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded"
+							on:click="{() => handlePageClick(currentPage + 1)}">Next</button>
+					{/if}
+				</div>
+
+				<!-- <div class="max-w-screen overflow-x-auto scrollbar-none lg:hidden">
 					<div class="flex flex-row">
 						{#each data.home?.categories?.data as category}
 							{#if category?.img || category?.img}
@@ -148,13 +224,17 @@ $: heroBanners =
 							{/if}
 						{/each}
 					</div>
-				</div>
+				</div> -->
 
-				<div class="hidden grid-cols-7 lg:grid">
-					{#each data.home?.categories?.data as category}
-						{#if category?.img || category?.img}
+				<!-- <div class="hidden grid-cols-7 lg:grid">
+					{#each data.home as product}
+						{#if product.multipleImage && product.multipleImage.length > 0}
+							<img
+								src="{product.multipleImage[0].url}"
+								alt="{product.name}"
+								class="h-full w-full object-contain" />
 							<a
-								href="/{category.link || category.slug || '##'}"
+								href="/{product.multipleImage.link || category.slug || '##'}"
 								aria-label="Click to get the category related products"
 								class="col-span-1">
 								<LazyImg
@@ -166,7 +246,7 @@ $: heroBanners =
 							</a>
 						{/if}
 					{/each}
-				</div>
+				</div> -->
 			</div>
 		{/if}
 

@@ -369,7 +369,7 @@ async function onSearchSubmit({ detail }) {
 			{/if}
 
 			{#if me?.active}
-				<div
+				<!-- <div
 					class="relative hidden lg:block"
 					on:mouseenter="{() => (showDropdownAccount = true)}"
 					on:mouseleave="{() => (showDropdownAccount = false)}">
@@ -464,11 +464,11 @@ async function onSearchSubmit({ detail }) {
 							</li>
 						</ul>
 					{/if}
-				</div>
+				</div> -->
 
 				<!-- Menu -->
 
-				<button
+				<!-- <button
 					aria-label="Sidebar"
 					type="button"
 					class="focus:outline-none lg:hidden"
@@ -485,11 +485,11 @@ async function onSearchSubmit({ detail }) {
 							stroke-linejoin="round"
 							d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"></path>
 					</svg>
-				</button>
+				</button> -->
 			{:else}
 				<!-- Login -->
 
-				<a
+				<!-- <a
 					href="{$page.data?.loginUrl || '/auth/login'}?ref={$page?.url?.pathname}{$page?.url
 						?.search}"
 					aria-label="Click to route login"
@@ -515,7 +515,7 @@ async function onSearchSubmit({ detail }) {
 							Login
 						</span>
 					</button>
-				</a>
+				</a> -->
 			{/if}
 		</div>
 	</div>
