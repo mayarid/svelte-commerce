@@ -183,7 +183,7 @@ const handlePageClick = (page) => {
 					</div>
 				</div>
 
-				<div class="flex justify-center items-center space-x-2">
+				<!-- <div class="flex justify-center items-center space-x-2">
 					{#if currentPage > 1}
 						<button
 							class="bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded"
@@ -203,7 +203,7 @@ const handlePageClick = (page) => {
 							class="bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded"
 							on:click="{() => handlePageClick(currentPage + 1)}">Next</button>
 					{/if}
-				</div>
+				</div> -->
 
 				<!-- <div class="max-w-screen overflow-x-auto scrollbar-none lg:hidden">
 					<div class="flex flex-row">
