@@ -277,6 +277,7 @@ function handleMobileCanvas() {
 		showEditor = true
 	}
 }
+// console.log(data)
 </script>
 
 <SEO {...seoProps} />
@@ -780,6 +781,7 @@ function handleMobileCanvas() {
 										href="/cart"
 										aria-label="Click to route cart page"
 										class="relative flex w-full transform items-center justify-center overflow-hidden rounded-md border border-primary-500 bg-primary-500 px-4 py-2 text-center text-sm font-semibold tracking-wider text-white shadow-md transition duration-700 focus:outline-none focus:ring-0 focus:ring-offset-0 hover:border-primary-700 hover:bg-primary-700"
+										on:click="{() => goto('/cart')}"
 										data-sveltekit-preload-data>
 										<svg
 											xmlns="http://www.w3.org/2000/svg"
@@ -806,22 +808,21 @@ function handleMobileCanvas() {
 										use:enhance="{() => {
 											return async ({ result }) => {
 												// console.log(result)
-												// result?.data?.qty < 0
-												// 	? fireGTagEvent('remove_from_cart', result?.data)
-												// 	: fireGTagEvent('add_to_cart', result?.data)
-
-												cartButtonText = 'Added To Cart'
+												result?.data?.qty < 0
+													? fireGTagEvent('remove_from_cart', result?.data)
+													: fireGTagEvent('add_to_cart', result?.data)
 												bounceItemFromTop = true
 												setTimeout(() => {
 													bounceItemFromTop = false
 												}, 3000)
-												cartButtonText = 'Go to cart'
+
 												if (customizedImg) {
 													goto(`/checkout/address`)
 												}
 												invalidateAll()
 
 												await applyAction(result)
+												console.log(bounceItemFromTop)
 											}
 										}}">
 										<input type="hidden" name="pid" value="{data?.product?._id}" />
@@ -1246,7 +1247,7 @@ function handleMobileCanvas() {
 	product="{data.product}" />
 
 {#if bounceItemFromTop}
-	<AnimatedCartItem img="{customizedImg || data.product?.img || data.product?.images[0].url}" />
+	<AnimatedCartItem img="{data.product.img ? data.product.img.url : data.product.images[0].url}" />
 {/if}
 
 <!-- <UserForm showUserInputForm="{showUserInputForm}" /> -->
