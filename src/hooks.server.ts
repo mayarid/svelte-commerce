@@ -1,6 +1,6 @@
 import { error, type Handle } from '@sveltejs/kit'
-import { SECRET_SENTRY_DSN } from '$env/static/private'
-const SENTRY_DSN = SECRET_SENTRY_DSN
+// import { SECRET_SENTRY_DSN } from '$env/static/private'
+const SENTRY_DSN = ''
 import * as Sentry from '@sentry/svelte'
 import { BrowserTracing } from '@sentry/tracing'
 import { DOMAIN, HTTP_ENDPOINT, listOfPagesWithoutBackButton, WWW_URL } from '$lib/config'

@@ -1,5 +1,5 @@
 import { searchProducts } from '$lib/services/ProductService'
-import { generatePriceRange } from '$lib/utils'
+// import { generatePriceRange } from '$lib/utils'
 import { error } from '@sveltejs/kit'
 export const prerender = false
 
@@ -44,9 +44,9 @@ export async function load({ url, locals, cookies, parent }) {
 		loading = false
 	}
 	let priceRange = []
-	if (facets.all_aggs?.price_stats?.max && facets.all_aggs?.price_stats?.min) {
-		priceRange = generatePriceRange(facets.all_aggs?.price_stats)
-	}
+	// if (facets.all_aggs?.price_stats?.max && facets.all_aggs?.price_stats?.min) {
+	// 	priceRange = generatePriceRange(facets.all_aggs?.price_stats)
+	// }
 	return {
 		loading,
 		err,
