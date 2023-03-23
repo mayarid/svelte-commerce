@@ -808,21 +808,23 @@ function handleMobileCanvas() {
 										use:enhance="{() => {
 											return async ({ result }) => {
 												// console.log(result)
-												result?.data?.qty < 0
-													? fireGTagEvent('remove_from_cart', result?.data)
-													: fireGTagEvent('add_to_cart', result?.data)
+												// result?.data?.qty < 0
+												// 	? fireGTagEvent('remove_from_cart', result?.data)
+												// 	: fireGTagEvent('add_to_cart', result?.data)
 												bounceItemFromTop = true
+
 												setTimeout(() => {
 													bounceItemFromTop = false
+													goto(`/cart`)
 												}, 3000)
 
-												if (customizedImg) {
-													goto(`/checkout/address`)
-												}
-												invalidateAll()
+												// if (customizedImg) {
+												// 	goto(`/checkout/address`)
+												// }
+												// invalidateAll()
 
-												await applyAction(result)
-												console.log(bounceItemFromTop)
+												// await applyAction(result)
+												// console.log(bounceItemFromTop)
 											}
 										}}">
 										<input type="hidden" name="pid" value="{data?.product?._id}" />
