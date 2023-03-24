@@ -21,6 +21,7 @@ import { fetchProducts } from '$lib/services/ProductService'
 import { fetchCoupons } from '$lib/services/CouponService'
 import {
 	addToCartService,
+	removeCart,
 	applyCouponService,
 	removeCouponService
 } from '$lib/services/CartService'
@@ -50,15 +51,23 @@ onMount(() => {
 	fireGTagEvent('view_cart', data.cart)
 })
 
-const addToCart = async ({ pid, qty, customizedImg, ix }: any) => {
+const addToCart = async ({ pid, ix }: any) => {
+	console.log({ pid, ix })
 	loading[ix] = true
 	await addToCartService({
 		pid: pid,
-		vid: pid,
-		qty: qty,
-		customizedImg: customizedImg || null,
-		storeId: $page.data.store?.id,
-		origin: $page.data.origin
+		cartId: data.cart.cartId
+	})
+	await invalidateAll()
+	loading[ix] = false
+}
+
+const removeCurrentCart = async ({ pid, ix }: any) => {
+	console.log({ pid, ix })
+	loading[ix] = true
+	await removeCart({
+		pid: pid,
+		cartId: data.cart.cartId
 	})
 
 	await invalidateAll()
@@ -350,9 +359,7 @@ console.log(data)
 														disabled="{loading[ix]}"
 														on:click="{() =>
 															addToCart({
-																pid: item.pid,
-																qty: -1,
-																customizedImg: item.customizedImg,
+																pid: item.product.pid,
 																ix: ix
 															})}"
 														type="button"
@@ -387,9 +394,7 @@ console.log(data)
 														disabled="{loading[ix]}"
 														on:click="{() =>
 															addToCart({
-																pid: item.pid,
-																qty: +1,
-																customizedImg: item.customizedImg,
+																pid: item.product.pid,
 																ix: ix
 															})}"
 														type="button"
@@ -412,10 +417,8 @@ console.log(data)
 												<button
 													type="button"
 													on:click="{() =>
-														addToCart({
-															pid: item.pid,
-															qty: -9999999,
-															customizedImg: item.customizedImg,
+														removeCurrentCart({
+															pid: item.product.id,
 															ix: ix
 														})}"
 													class="flex h-6 w-6 transform items-center justify-center rounded-full bg-gray-200 shadow transition  duration-300 focus:outline-none hover:bg-gray-300 hover:opacity-80 active:scale-95 sm:h-8 sm:w-8">

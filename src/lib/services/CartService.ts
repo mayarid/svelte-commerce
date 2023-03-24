@@ -1,5 +1,13 @@
 import { provider } from '$lib/config'
-import type { Error, MayarAddToCart, MayarCart, Product } from '$lib/types'
+import type {
+	Error,
+	MayarAPI,
+	MayarAddToCart,
+	MayarCart,
+	MayarDetailProduct,
+	MayarProduct,
+	Product
+} from '$lib/types'
 import { del, getAPI, post } from '$lib/utils/api'
 import {
 	getBigCommerceApi,
@@ -48,10 +56,10 @@ export const fetchRefreshCart = async ({ cartId }: any) => {
 	console.log(cartId)
 
 	try {
-		const getCart: MayarCart = await getMayarApi(`hl/v1/cart?sessionId=${cartId}`)
 		if (!cartId) {
 			console.log('cartId undefined')
 		}
+		const getCart: MayarCart = await getMayarApi(`hl/v1/cart?sessionId=${cartId}`)
 
 		const res = {
 			cart_id: cartId,
@@ -102,13 +110,55 @@ export const fetchMyCart = async ({ origin, storeId, server = false, sid = null 
 export const addToCartService = async ({ pid, cartId }: any) => {
 	try {
 		let res: any = {}
+
+		if (!cartId) {
+			console.log('cartId undefined')
+		}
+
+		const detailPrdoduct: MayarDetailProduct = await getMayarApi(`hl/v1/product/${pid}`)
+		const getCart: MayarCart = await getMayarApi(`hl/v1/cart?sessionId=${cartId}`)
+
+		const postCart: MayarCart = await postMayarApi(`hl/v1/cart/add`, {
+			id: pid,
+			sessionId: cartId
+		})
+
+		res = {
+			cart_id: cartId,
+			items: postCart.data.productItems,
+			qty: postCart.data.items,
+			tax: 0,
+			subtotal: 0,
+			total: postCart.data.amountTotal,
+			currencySymbol: 'Rp.'
+		}
+
+		const existingItem = getCart.data.productItems.find((item) => item.product.id === pid)
+
+		if (existingItem) {
+			const productIndex = getCart.data.productItems.findIndex((i) => i.product.id === pid)
+			res.items[productIndex].qty++
+			res.qty++
+			res.total = res.total + detailPrdoduct.data.amount
+		}
+
+		return res
+	} catch (e) {
+		console.error(e.messages)
+		throw error(e.status, e.data?.message || e.message)
+	}
+}
+
+export const removeCart = async ({ pid, cartId }: any) => {
+	try {
+		let res: any = {}
 		console.log(cartId)
 
 		if (!cartId) {
 			console.log('cartId undefined')
 		}
 
-		const getCart: MayarAddToCart = await postMayarApi(`hl/v1/cart/add`, {
+		const getCart: MayarAddToCart = await postMayarApi(`hl/v1/cart/remove`, {
 			id: pid,
 			sessionId: cartId
 		})
