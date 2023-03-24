@@ -115,7 +115,7 @@ export const addToCartService = async ({ pid, cartId }: any) => {
 			console.log('cartId undefined')
 		}
 
-		const detailPrdoduct: MayarDetailProduct = await getMayarApi(`hl/v1/product/${pid}`)
+		// const detailPrdoduct: MayarDetailProduct = await getMayarApi(`hl/v1/product/${pid}`)
 		// const getCart: MayarCart = await getMayarApi(`hl/v1/cart?sessionId=${cartId}`)
 
 		const postCart: MayarCart = await postMayarApi(`hl/v1/cart/add`, {
@@ -123,24 +123,24 @@ export const addToCartService = async ({ pid, cartId }: any) => {
 			sessionId: cartId
 		})
 
-		const existingItem = postCart.data.productItems.find((item) => item.product.id === pid)
+		// const existingItem = postCart.data.productItems.find((item) => item.product.id === pid)
 
-		if (existingItem) {
-			const productIndex = postCart.data.productItems.findIndex((i) => i.product.id === pid)
-			let product = {
-				cart_id: cartId,
-				items: postCart.data.productItems,
-				qty: postCart.data.items,
-				tax: 0,
-				subtotal: 0,
-				total: postCart.data.amountTotal,
-				currencySymbol: 'Rp.'
-			}
-			product.items[productIndex].qty++
-			product.qty++
-			product.total = product.total + detailPrdoduct.data.amount
-			return product
-		}
+		// if (existingItem) {
+		// 	const productIndex = postCart.data.productItems.findIndex((i) => i.product.id === pid)
+		// 	let product = {
+		// 		cart_id: cartId,
+		// 		items: postCart.data.productItems,
+		// 		qty: postCart.data.items,
+		// 		tax: 0,
+		// 		subtotal: 0,
+		// 		total: postCart.data.amountTotal,
+		// 		currencySymbol: 'Rp.'
+		// 	}
+		// 	product.items[productIndex].qty++
+		// 	product.qty++
+		// 	product.total = product.total + detailPrdoduct.data.amount
+		// 	return product
+		// }
 
 		res = {
 			cart_id: cartId,
