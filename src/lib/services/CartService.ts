@@ -52,14 +52,11 @@ export const fetchCartData = async ({ origin, storeId, server = false, sid = nul
 }
 
 export const fetchRefreshCart = async ({ cartId }: any) => {
-	console.log('fetchRefreshCart')
-	console.log(cartId)
-
 	try {
 		if (!cartId) {
 			console.log('cartId undefined')
 		}
-		const getCart: MayarCart = await getMayarApi(`hl/v1/cart?sessionId=${cartId}`)
+		const getCart: MayarCart = await getMayarApi(`cart?sessionId=${cartId}`)
 
 		const res = {
 			cart_id: cartId,
@@ -107,7 +104,7 @@ export const fetchMyCart = async ({ origin, storeId, server = false, sid = null 
 	}
 }
 
-export const addToCartService = async ({ pid, cartId }: any) => {
+export const addToCartService = async ({ pid, qty, cartId, variant }: any) => {
 	try {
 		let res: any = {}
 
@@ -115,12 +112,17 @@ export const addToCartService = async ({ pid, cartId }: any) => {
 			console.log('cartId undefined')
 		}
 
-		// const detailPrdoduct: MayarDetailProduct = await getMayarApi(`hl/v1/product/${pid}`)
+		const detailPrdoduct: MayarDetailProduct = await getMayarApi(`product/${pid}`)
 		// const getCart: MayarCart = await getMayarApi(`hl/v1/cart?sessionId=${cartId}`)
 
-		const postCart: MayarCart = await postMayarApi(`hl/v1/cart/add`, {
+		const postCart: MayarCart = await postMayarApi(`cart/add`, {
 			id: pid,
-			sessionId: cartId
+			qty: qty,
+			sessionId: cartId,
+			item: {
+				sku: variant,
+				name: detailPrdoduct.data.name
+			}
 		})
 
 		// const existingItem = postCart.data.productItems.find((item) => item.product.id === pid)
@@ -168,7 +170,7 @@ export const removeCart = async ({ pid, cartId }: any) => {
 			console.log('cartId undefined')
 		}
 
-		const getCart: MayarAddToCart = await postMayarApi(`hl/v1/cart/remove`, {
+		const getCart: MayarAddToCart = await postMayarApi(`cart/remove`, {
 			id: pid,
 			sessionId: cartId
 		})

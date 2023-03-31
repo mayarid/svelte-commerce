@@ -44,7 +44,7 @@ export const searchProducts = async ({
 		let category = ''
 		let err = ''
 
-		const res: MayarSearch = await getMayarApi(`hl/v1/product/07e9d941-1538-41f7-b01d-ad251e4d3b63`)
+		const res: MayarSearch = await getMayarApi(`product?search=${query}`)
 		if (res.data.length > 0) {
 			res.data.map((productItem) => {
 				let product: Product = {
@@ -73,7 +73,8 @@ export const searchProducts = async ({
 					weight: 200,
 					width: 75,
 					categoryPool: undefined,
-					tags: []
+					tags: [],
+					product: undefined
 				}
 
 				if (productItem.multipleImage.length > 0) {
@@ -112,7 +113,7 @@ export const searchProducts = async ({
 
 export const fetchProducts = async ({ origin, slug, id, server = false, sid = null }: any) => {
 	try {
-		const res: MayarAPI = await getMayarApi('hl/v1/product')
+		const res: MayarAPI = await getMayarApi('product')
 
 		return res?.data || []
 	} catch (e) {
@@ -124,63 +125,35 @@ export const fetchProducts = async ({ origin, slug, id, server = false, sid = nu
 
 export const fetchProduct = async ({ slug }: { slug: string }) => {
 	try {
-		const res: MayarDetailProduct = await getMayarApi(`hl/v1/product/${slug}`)
+		const res: MayarDetailProduct = await getMayarApi(`product/${slug}`)
 		let product: Product | {} = {}
 
-		if (res.data.type === 'physical_product') {
-			product = {
-				id: res.data.id,
-				_id: res.data.id,
-				active: true,
-				barcode: '',
-				countryOfOrigin: '',
-				description: res.data.description,
-				discount: 0,
-				ean: '',
-				hasStock: res.data.qty > 0 ? true : false,
-				height: 96,
-				hsn: '',
-				images: res.data.multipleImage,
-				img: res.data.coverImage,
-				isCustomized: false,
-				mrp: 0,
-				name: res.data.name,
-				new: true,
-				price: res.data.amount,
-				sku: '',
-				slug: res.data.link,
-				status: '',
-				stock: res.data.qty,
-				weight: 200,
-				width: 75
-			}
-		} else {
-			product = {
-				id: res.data.id,
-				_id: res.data.id,
-				active: true,
-				barcode: '',
-				countryOfOrigin: '',
-				description: res.data.description,
-				discount: 0,
-				ean: '',
-				hasStock: res.data.limit > 0 ? true : false,
-				height: 96,
-				hsn: '',
-				images: [res.data.coverImage],
-				img: res.data.coverImage,
-				isCustomized: false,
-				mrp: 0,
-				name: res.data.name,
-				new: true,
-				price: res.data.amount,
-				sku: '',
-				slug: res.data.link,
-				status: '',
-				stock: res.data.qty,
-				weight: 200,
-				width: 75
-			}
+		product = {
+			id: res.data.id,
+			_id: res.data.id,
+			active: true,
+			barcode: '',
+			countryOfOrigin: '',
+			description: res.data.description,
+			discount: 0,
+			ean: '',
+			hasStock: res.data.qty > 0 ? true : false,
+			height: 96,
+			hsn: '',
+			images: res.data.multipleImage,
+			img: res.data.coverImage,
+			isCustomized: false,
+			mrp: 0,
+			name: res.data.name,
+			new: true,
+			price: res.data.amount,
+			sku: '',
+			slug: res.data.link,
+			status: '',
+			stock: res.data.qty,
+			weight: 200,
+			width: 75,
+			variants: res.data.items
 		}
 
 		return product || {}

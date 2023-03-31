@@ -4,8 +4,15 @@ import type { MayarAPI } from '$lib/types'
 
 export const fetchHome = async () => {
 	try {
-		const res: MayarAPI = await getMayarApi('hl/v1/product')
-		return res.data || []
+		let products = []
+		const res: MayarAPI = await getMayarApi('product')
+		res.data.map((product) => {
+			if (product.type === 'physical_product') {
+				return products.push(product)
+			}
+		})
+
+		return products || []
 	} catch (e) {
 		throw error(e.status, e.data?.message || e.message)
 	}

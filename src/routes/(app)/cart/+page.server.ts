@@ -7,9 +7,7 @@ export const load: PageServerLoad = async ({ url, request, locals, cookies }) =>
 	let loading = false
 	let cart = locals.cart
 	const cartId = cookies.get('cartId')
-	console.log(cartId)
 	try {
-		console.log('load cart')
 		loading = true
 		const res = await fetchRefreshCart({
 			cartId
@@ -47,13 +45,16 @@ const add: Action = async ({ request, cookies, locals }) => {
 	// const linkedItems = JSON.parse(data.get('linkedItems'))
 	// const options = JSON.parse(data.get('options')) //data.get('options') //
 	// const customizedImg = data.get('customizedImg')
+	const variant = data.get('variant')
 	if (typeof pid !== 'string' || !pid) {
 		return fail(400, { invalid: true })
 	}
 	try {
 		let cart = await addToCartService({
 			pid,
-			cartId
+			qty: 1,
+			cartId,
+			variant
 		})
 		// console.log(`add to cart: ${JSON.stringify(cart, null, 2)}`)
 

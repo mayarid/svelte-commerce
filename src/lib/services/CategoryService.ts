@@ -72,7 +72,7 @@ export const fetchCategory = async ({ origin, slug, id, server = false, sid = nu
 				res = await getWooCommerceApi(`categories`, {}, sid)
 				break
 			case 'mayar':
-				const mayarResultAPI: MayarAPI = await getMayarApi('hl/v1/product')
+				const mayarResultAPI: MayarAPI = await getMayarApi('product')
 				mayarResultAPI.data.map((result, index) => {
 					let currentCat = ''
 					if (currentCat !== result.category) {

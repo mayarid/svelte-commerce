@@ -158,6 +158,7 @@ let screenWidth
 let selectedLinkiedProducts = []
 let selectedOptions1 = []
 let relatedProducts = []
+let selectVariant = ''
 
 $: if (y > 500) {
 	showUserInputForm = true
@@ -193,6 +194,11 @@ onMount(async () => {
 	} finally {
 	}
 })
+
+function handleVariant(event) {
+	selectVariant = event.target.value
+	console.log(selectVariant)
+}
 
 function handleShowReviewsCount(showReviewsCount) {
 	if (showReviewsCount >= productReview?.data?.count) {
@@ -277,7 +283,7 @@ function handleMobileCanvas() {
 		showEditor = true
 	}
 }
-// console.log(data)
+console.log(data)
 </script>
 
 <SEO {...seoProps} />
@@ -734,6 +740,17 @@ function handleMobileCanvas() {
 				{#if !data.product?.isCustomized}
 					<div
 						class="box-shadow itmes-center fixed inset-x-0 bottom-0 z-10 grid w-full grid-cols-5 gap-2 border-t bg-white p-2 uppercase md:static md:mb-5 md:grid-cols-2 md:border-t-0 md:bg-transparent md:p-0 lg:max-w-sm">
+						{#if data.product?.variants || data.product.variants.length == 0}
+							<select
+								on:change="{handleVariant}"
+								class="block w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-grey-500 focus:border-grey-500 sm:text-sm">
+								{#each data.product?.variants as variant}
+									<option value="{variant.sku}">
+										{variant.option}
+									</option>
+								{/each}
+							</select>
+						{/if}
 						<!-- <div class="col-span-2 md:col-span-1">
 							<WhiteButton
 								type="button"
@@ -837,10 +854,7 @@ function handleMobileCanvas() {
 
 										<input type="hidden" name="qty" value="{1}" />
 
-										<input
-											type="hidden"
-											name="options"
-											value="{JSON.stringify(selectedOptions1)}" />
+										<input type="hidden" name="variant" value="{selectVariant}" />
 
 										<input type="hidden" name="customizedImg" value="{customizedImg}" />
 

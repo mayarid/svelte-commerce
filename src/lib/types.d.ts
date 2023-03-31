@@ -201,6 +201,11 @@ interface MayarCart {
 					fileType: string
 					url: string
 				}
+				variant: {
+					sku: string
+					name: string
+					amount: number
+				}
 			}
 		}[]
 	}
@@ -717,6 +722,17 @@ interface MayarProduct {
 	multipleImage: null | IMultipleImage[]
 	coverImage: null | ICover
 	qty?: number
+	items?: {
+		details: {
+			name: string
+			value: string
+		}[]
+		amount: number
+		sku: string
+		qty: number
+		isVisible: boolean
+		option: string
+	}
 }
 
 interface MayarDetailProduct {

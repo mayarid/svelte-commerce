@@ -286,7 +286,7 @@ console.log(data)
 													src="{getCdnImageUrl(
 														item.product.coverImageId
 															? item.product.coverImage.url
-															: item.product.multipleImages[0].url
+															: item.product.multipleImage[0].url
 													)}?tr=w-auto,h-256,cm-pad_resize&sharpen=true"
 													alt=""
 													width="128"
