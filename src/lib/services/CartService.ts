@@ -114,8 +114,7 @@ export const addToCartService = async ({ pid, qty, cartId, variant }: any) => {
 
 		const detailPrdoduct: MayarDetailProduct = await getMayarApi(`product/${pid}`)
 		// const getCart: MayarCart = await getMayarApi(`hl/v1/cart?sessionId=${cartId}`)
-
-		const postCart: MayarCart = await postMayarApi(`cart/add`, {
+		const req = {
 			id: pid,
 			qty: qty,
 			sessionId: cartId,
@@ -123,7 +122,10 @@ export const addToCartService = async ({ pid, qty, cartId, variant }: any) => {
 				sku: variant,
 				name: detailPrdoduct.data.name
 			}
-		})
+		}
+
+		console.log(req)
+		const postCart: MayarCart = await postMayarApi(`cart/add`, req)
 
 		// const existingItem = postCart.data.productItems.find((item) => item.product.id === pid)
 
