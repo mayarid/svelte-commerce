@@ -46,6 +46,7 @@ const add: Action = async ({ request, cookies, locals }) => {
 	// const options = JSON.parse(data.get('options')) //data.get('options') //
 	// const customizedImg = data.get('customizedImg')
 	const variant = data.get('variant')
+	console.log(`Variant ${variant}`)
 	if (typeof pid !== 'string' || !pid) {
 		return fail(400, { invalid: true })
 	}

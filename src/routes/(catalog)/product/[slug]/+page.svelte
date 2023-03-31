@@ -743,7 +743,9 @@ console.log(data)
 						{#if data.product?.variants || data.product.variants.length == 0}
 							<select
 								on:change="{handleVariant}"
-								class="block w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-grey-500 focus:border-grey-500 sm:text-sm">
+								class="block w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-grey-500 focus:border-grey-500 sm:text-sm"
+								required>
+								<option value="">Select an variant</option>
 								{#each data.product?.variants as variant}
 									<option value="{variant.sku}">
 										{variant.option}
@@ -862,6 +864,7 @@ console.log(data)
 											type="submit"
 											loading="{loading}"
 											loadingringsize="sm"
+											disabled="{selectVariant === '' ? true : false}"
 											class="w-full text-sm">
 											<svg
 												xmlns="http://www.w3.org/2000/svg"
