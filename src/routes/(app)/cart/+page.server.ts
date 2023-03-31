@@ -85,6 +85,7 @@ const add: Action = async ({ request, cookies, locals }) => {
 			return {}
 		}
 	} catch (e) {
+		console.error(e)
 		return {}
 	}
 }
