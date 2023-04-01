@@ -51,23 +51,37 @@ onMount(() => {
 	fireGTagEvent('view_cart', data.cart)
 })
 
-const addToCart = async ({ pid, ix }: any) => {
-	console.log({ pid, ix })
+const addToCart = async ({ ix }: any) => {
 	loading[ix] = true
 	await addToCartService({
-		pid: pid,
-		cartId: data.cart.cartId
+		pid: data.cart.items[ix].product.id,
+		qty: 1,
+		cartId: data.cart.cartId,
+		variant: data.cart.items[ix].product.variant
+	})
+	await invalidateAll()
+	loading[ix] = false
+}
+
+const decreaseCart = async ({ ix }: any) => {
+	loading[ix] = true
+	await removeCart({
+		pid: data.cart.items[ix].product.id,
+		qty: 1,
+		cartId: data.cart.cartId,
+		variant: data.cart.items[ix].product.variant
 	})
 	await invalidateAll()
 	loading[ix] = false
 }
 
 const removeCurrentCart = async ({ pid, ix }: any) => {
-	console.log({ pid, ix })
 	loading[ix] = true
 	await removeCart({
 		pid: pid,
-		cartId: data.cart.cartId
+		qty: 999999999,
+		cartId: data.cart.cartId,
+		variant: data.cart.items[ix].product.variant
 	})
 
 	await invalidateAll()
@@ -138,7 +152,8 @@ async function getCoupons() {
 		loadingCoupon = false
 	}
 }
-console.log(data)
+// console.log(`Cart`)
+// console.log(data.cart.items[0].product.variant)
 </script>
 
 <SEO {...seoProps} />
@@ -355,11 +370,10 @@ console.log(data)
 
 											<div class="mt-4 flex items-center justify-between">
 												<div class="flex items-center justify-center">
-													<!-- <button
+													<button
 														disabled="{loading[ix]}"
 														on:click="{() =>
-															addToCart({
-																pid: item.product.pid,
+															decreaseCart({
 																ix: ix
 															})}"
 														type="button"
@@ -376,7 +390,7 @@ console.log(data)
 																stroke-width="2"
 																d="M20 12H4"></path>
 														</svg>
-													</button> -->
+													</button>
 
 													<div
 														class="mx-2 flex h-6 w-6 items-center justify-center text-xs font-bold sm:h-8  sm:w-8  ">
@@ -386,15 +400,14 @@ console.log(data)
 																alt="loading"
 																class="h-auto w-5 object-contain object-center" />
 														{:else}
-															<span>Quantity: {item?.qty}</span>
+															<span>{item?.qty}</span>
 														{/if}
 													</div>
 
-													<!-- <button
+													<button
 														disabled="{loading[ix]}"
 														on:click="{() =>
 															addToCart({
-																pid: item.product.pid,
 																ix: ix
 															})}"
 														type="button"
@@ -411,7 +424,7 @@ console.log(data)
 																stroke-width="2"
 																d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
 														</svg>
-													</button> -->
+													</button>
 												</div>
 
 												<button

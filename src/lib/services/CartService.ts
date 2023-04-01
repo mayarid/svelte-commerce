@@ -119,8 +119,8 @@ export const addToCartService = async ({ pid, qty, cartId, variant }: any) => {
 			qty: qty,
 			sessionId: cartId,
 			item: {
-				sku: variant,
-				name: detailPrdoduct.data.name
+				sku: variant.sku,
+				name: variant.name
 			}
 		}
 
@@ -163,7 +163,7 @@ export const addToCartService = async ({ pid, qty, cartId, variant }: any) => {
 	}
 }
 
-export const removeCart = async ({ pid, cartId }: any) => {
+export const removeCart = async ({ pid, qty, cartId, variant: { sku, name } }: any) => {
 	try {
 		let res: any = {}
 		console.log(cartId)
@@ -174,7 +174,12 @@ export const removeCart = async ({ pid, cartId }: any) => {
 
 		const getCart: MayarAddToCart = await postMayarApi(`cart/remove`, {
 			id: pid,
-			sessionId: cartId
+			qty: qty,
+			sessionId: cartId,
+			item: {
+				sku: sku,
+				name: name
+			}
 		})
 
 		res = {
