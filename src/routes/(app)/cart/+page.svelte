@@ -54,6 +54,7 @@ onMount(() => {
 const addToCart = async ({ ix }: any) => {
 	loading[ix] = true
 	await addToCartService({
+		from: 'cart',
 		pid: data.cart.items[ix].product.id,
 		qty: 1,
 		cartId: data.cart.cartId,

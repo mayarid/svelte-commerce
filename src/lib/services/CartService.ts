@@ -104,23 +104,37 @@ export const fetchMyCart = async ({ origin, storeId, server = false, sid = null 
 	}
 }
 
-export const addToCartService = async ({ pid, qty, cartId, variant }: any) => {
+export const addToCartService = async ({ from, pid, qty, cartId, variant }: any) => {
 	try {
 		let res: any = {}
+		let req: any = {}
 
 		if (!cartId) {
 			console.log('cartId undefined')
 		}
 
-		const detailPrdoduct: MayarDetailProduct = await getMayarApi(`product/${pid}`)
 		// const getCart: MayarCart = await getMayarApi(`hl/v1/cart?sessionId=${cartId}`)
-		const req = {
-			id: pid,
-			qty: qty,
-			sessionId: cartId,
-			item: {
-				sku: variant.sku,
-				name: variant.name
+
+		if (from === 'product') {
+			const detailPrdoduct: MayarDetailProduct = await getMayarApi(`product/${pid}`)
+			req = {
+				id: pid,
+				qty: qty,
+				sessionId: cartId,
+				item: {
+					sku: variant,
+					name: detailPrdoduct.data.name
+				}
+			}
+		} else {
+			req = {
+				id: pid,
+				qty: qty,
+				sessionId: cartId,
+				item: {
+					sku: variant.sku,
+					name: variant.name
+				}
 			}
 		}
 

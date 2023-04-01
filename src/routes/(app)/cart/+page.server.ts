@@ -52,6 +52,7 @@ const add: Action = async ({ request, cookies, locals }) => {
 	}
 	try {
 		let cart = await addToCartService({
+			from: 'product',
 			pid,
 			qty: 1,
 			cartId,
