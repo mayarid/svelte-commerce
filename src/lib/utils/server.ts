@@ -247,7 +247,7 @@ export const postWooCommerceApi = async (endpoint: string, query: any, sid?: any
 }
 
 export const getMayarApi = async (endpoint: string) => {
-	const response = await fetch('https://8efc-103-150-102-165.ap.ngrok.io/v1' + '/' + endpoint, {
+	const response = await fetch('https://55f9-103-105-33-66.ngrok-free.app/v1' + '/' + endpoint, {
 		method: 'GET',
 		headers: {
 			Authorization:
@@ -267,7 +267,7 @@ export const getMayarApi = async (endpoint: string) => {
 }
 
 export const postMayarApi = async (endpoint: string, body: any) => {
-	const response = await fetch('https://8efc-103-150-102-165.ap.ngrok.io/v1' + '/' + endpoint, {
+	const response = await fetch('https://55f9-103-105-33-66.ngrok-free.app/v1' + '/' + endpoint, {
 		method: 'POST',
 		headers: {
 			Authorization:
