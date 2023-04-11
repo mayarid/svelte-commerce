@@ -12,6 +12,7 @@ import {
 // const WooCommerceRestApi = pkg.default // node v-16
 import { WOO_COMMERCE_STORE_LINK, WOO_COMMERCE_KEY, WOO_COMMERCE_SECRET } from '../config'
 import { serialize } from '.'
+import { env } from '$env/dynamic/public'
 
 // const WooCommerce = new WooCommerceRestApi({
 // 	url: WOO_COMMERCE_STORE_LINK,
@@ -247,11 +248,10 @@ export const postWooCommerceApi = async (endpoint: string, query: any, sid?: any
 }
 
 export const getMayarApi = async (endpoint: string) => {
-	const response = await fetch('https://55f9-103-105-33-66.ngrok-free.app/v1' + '/' + endpoint, {
+	const response = await fetch(HTTP_ENDPOINT + endpoint, {
 		method: 'GET',
 		headers: {
-			Authorization:
-				'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxNGUyOWU2Ni00NmNhLTQzZDctOWM4YS1mYWMwMTY2NzViZmYiLCJhY2NvdW50SWQiOiJiNDE3MWIyNy1jYWVkLTRiZGUtYjNkMi05ODZiYWNlMzkyMjciLCJjcmVhdGVkQXQiOiIxNjc2NTIyMTc4OTI2Iiwicm9sZSI6ImRldmVsb3BlciIsInN1YiI6ImRlbHZpZXJvbmlnZWxAZ21haWwuY29tIiwibmFtZSI6Im5pZ2VsZGVsdmllcm8iLCJsaW5rIjoibmlnZWwiLCJpc1NlbGZEb21haW4iOm51bGwsImlhdCI6MTY3NjUyMjE3OH0.dXZFa5kcMLjhPu7GaaLUsRoh5hLRF4QA78UT-iT2VbREev3mvEIsUqc-xKc6C9FQaiLHDAvwC-oD05wzFhmv3lQV1UVtXGoJG0GC4Eumb-UX3QR6-glHyQaIPj2USlPug6wrBo1CKoM5l7LiPiqVPcr3vro0zZJzrK-gFZ15CBDYcVdEWw-9VLnpNj21RUbbPEnLdv8o283XHJ0_KmHINH0JY2x2hHW-Mb77ZZcU3qwBkYpG8ZXDQeMsf4zeoOhbVAtGtFOK9EzjXrEU2hHNbaAdlA50019IAgC8P0NRj8odTi3CPnl6UOUTVQvh9D3UwO3yLUKQ0l_vnjDfZKao8w'
+			Authorization: `Bearer ${env.PUBLIC_MAYAR_API_KEY}`
 		}
 	})
 
@@ -267,11 +267,10 @@ export const getMayarApi = async (endpoint: string) => {
 }
 
 export const postMayarApi = async (endpoint: string, body: any) => {
-	const response = await fetch('https://55f9-103-105-33-66.ngrok-free.app/v1' + '/' + endpoint, {
+	const response = await fetch(HTTP_ENDPOINT + endpoint, {
 		method: 'POST',
 		headers: {
-			Authorization:
-				'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxNGUyOWU2Ni00NmNhLTQzZDctOWM4YS1mYWMwMTY2NzViZmYiLCJhY2NvdW50SWQiOiJiNDE3MWIyNy1jYWVkLTRiZGUtYjNkMi05ODZiYWNlMzkyMjciLCJjcmVhdGVkQXQiOiIxNjc2NTIyMTc4OTI2Iiwicm9sZSI6ImRldmVsb3BlciIsInN1YiI6ImRlbHZpZXJvbmlnZWxAZ21haWwuY29tIiwibmFtZSI6Im5pZ2VsZGVsdmllcm8iLCJsaW5rIjoibmlnZWwiLCJpc1NlbGZEb21haW4iOm51bGwsImlhdCI6MTY3NjUyMjE3OH0.dXZFa5kcMLjhPu7GaaLUsRoh5hLRF4QA78UT-iT2VbREev3mvEIsUqc-xKc6C9FQaiLHDAvwC-oD05wzFhmv3lQV1UVtXGoJG0GC4Eumb-UX3QR6-glHyQaIPj2USlPug6wrBo1CKoM5l7LiPiqVPcr3vro0zZJzrK-gFZ15CBDYcVdEWw-9VLnpNj21RUbbPEnLdv8o283XHJ0_KmHINH0JY2x2hHW-Mb77ZZcU3qwBkYpG8ZXDQeMsf4zeoOhbVAtGtFOK9EzjXrEU2hHNbaAdlA50019IAgC8P0NRj8odTi3CPnl6UOUTVQvh9D3UwO3yLUKQ0l_vnjDfZKao8w',
+			Authorization: `Bearer ${env.PUBLIC_MAYAR_API_KEY}`,
 			'Content-Type': 'application/json'
 		},
 		body: JSON.stringify(body)
