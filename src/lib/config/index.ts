@@ -19,8 +19,7 @@ export const currencyCode = 'USD'
 export const currencySymbol = '$'
 export const DOMAIN = env.PUBLIC_DOMAIN || 'http://localhost:3000'
 export const entity = 'Misiki'
-export const HTTP_ENDPOINT =
-	env.PUBLIC_HTTP_ENDPOINT || 'https://2cc7-103-105-33-114.ngrok-free.app/v1/'
+export const HTTP_ENDPOINT = 'https://2cc7-103-105-33-114.ngrok-free.app/v1/'
 export const IMAGE_CDN_URL = 'https://ik.imagekit.io/3wzatecz51w3i'
 export const mediaqueries = {
 	xs: '(min-width: 480px)',
