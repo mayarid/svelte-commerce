@@ -64,30 +64,30 @@ export const checkhWishlist = async ({
 }: any) => {
 	try {
 		let res: any = {}
-		switch (provider) {
-			case 'litekart':
-				if (server) {
-					res = await getBySid(
-						`wishlists/check?product=${pid}&variant=${vid}&store=${storeId}`,
-						sid
-					)
-				} else {
-					res = await getAPI(
-						`wishlists/check?product=${pid}&variant=${vid}&store=${storeId}`,
-						origin
-					)
-				}
-				break
-			case 'medusajs':
-				res = await getMedusajsApi(`customers/me`, {}, sid)
-				break
-			case 'bigcommerce':
-				res = await getBigCommerceApi(`wishlists/check`, {}, sid)
-				break
-			case 'woocommerce':
-				res = await getWooCommerceApi(`wishlists/check`, {}, sid)
-				break
-		}
+		// switch (provider) {
+		// 	case 'litekart':
+		// 		if (server) {
+		// 			res = await getBySid(
+		// 				`wishlists/check?product=${pid}&variant=${vid}&store=${storeId}`,
+		// 				sid
+		// 			)
+		// 		} else {
+		// 			res = await getAPI(
+		// 				`wishlists/check?product=${pid}&variant=${vid}&store=${storeId}`,
+		// 				origin
+		// 			)
+		// 		}
+		// 		break
+		// 	case 'medusajs':
+		// 		res = await getMedusajsApi(`customers/me`, {}, sid)
+		// 		break
+		// 	case 'bigcommerce':
+		// 		res = await getBigCommerceApi(`wishlists/check`, {}, sid)
+		// 		break
+		// 	case 'woocommerce':
+		// 		res = await getWooCommerceApi(`wishlists/check`, {}, sid)
+		// 		break
+		// }
 		return res
 	} catch (e) {
 		throw error(e.status, e.data?.message || e.message)
