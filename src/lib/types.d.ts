@@ -173,6 +173,7 @@ interface MayarCart {
 		userId: string
 		sessionId: string
 		items: number
+		domain: string
 		amountTotal: number
 		productItems: {
 			qty: number

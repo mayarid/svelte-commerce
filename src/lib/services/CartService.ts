@@ -23,7 +23,6 @@ import { serializeNonPOJOs } from '$lib/utils/validations'
 import { error } from '@sveltejs/kit'
 
 export const fetchCartData = async ({ origin, storeId, server = false, sid = null }: any) => {
-	console.log('fetchCartData')
 	try {
 		let res: any = {}
 		switch (provider) {
@@ -57,7 +56,7 @@ export const fetchRefreshCart = async ({ cartId }: any) => {
 			console.log('cartId undefined')
 		}
 		const getCart: MayarCart = await getMayarApi(`cart?sessionId=${cartId}`)
-
+		console.log(`Cart: ${JSON.stringify(getCart, null, 2)}`)
 		const res = {
 			cart_id: cartId,
 			items: getCart.data.productItems,
@@ -65,7 +64,8 @@ export const fetchRefreshCart = async ({ cartId }: any) => {
 			tax: 0,
 			subtotal: 0,
 			total: getCart.data.amountTotal,
-			currencySymbol: 'Rp.'
+			currencySymbol: 'Rp.',
+			domain: getCart.data.domain
 		}
 		return res || {}
 	} catch (err) {

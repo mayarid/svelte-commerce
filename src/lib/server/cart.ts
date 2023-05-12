@@ -25,7 +25,8 @@ export const fetchCart = async (event: RequestEvent) => {
 			tax: cartRes.tax,
 			subtotal: cartRes.subtotal,
 			total: cartRes.total,
-			currencySymbol: 'Rp.'
+			currencySymbol: 'Rp.',
+			domain: cartRes.domain
 			// discount: cartRes.discount,
 			// selfTakeout: cartRes.selfTakeout,
 			// shipping: cartRes.shipping,

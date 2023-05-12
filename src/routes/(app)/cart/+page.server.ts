@@ -38,7 +38,6 @@ const add: Action = async ({ request, cookies, locals }) => {
 	const data = await request.formData()
 	const pid = data.get('pid')
 	const cartId = cookies.get('cartId')
-	console.log(cartId)
 
 	// console.log(pid)
 	// const vid = data.get('pid')
@@ -46,7 +45,6 @@ const add: Action = async ({ request, cookies, locals }) => {
 	// const options = JSON.parse(data.get('options')) //data.get('options') //
 	// const customizedImg = data.get('customizedImg')
 	const variant = data.get('variant')
-	console.log(`Variant ${variant}`)
 	if (typeof pid !== 'string' || !pid) {
 		return fail(400, { invalid: true })
 	}
@@ -58,7 +56,6 @@ const add: Action = async ({ request, cookies, locals }) => {
 			cartId,
 			variant
 		})
-		// console.log(`add to cart: ${JSON.stringify(cart, null, 2)}`)
 
 		if (cart) {
 			const cartObj = {

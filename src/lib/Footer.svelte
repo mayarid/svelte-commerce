@@ -96,13 +96,13 @@ let footerItems: any = [
 ]
 
 onMount(async () => {
-	const res = await getStoreData()
-	store = res.storeOne
-	megamenu = res.megamenu
-	popularSearches = res.popularSearches
-	if (browser) {
-		localStorage.setItem('megamenu', JSON.stringify(megamenu))
-	}
+	// const res = await getStoreData()
+	// store = res.storeOne
+	// megamenu = res.megamenu
+	// popularSearches = res.popularSearches
+	// if (browser) {
+	// 	localStorage.setItem('megamenu', JSON.stringify(megamenu))
+	// }
 })
 async function getStoreData() {
 	const response = await fetch('/server/store')

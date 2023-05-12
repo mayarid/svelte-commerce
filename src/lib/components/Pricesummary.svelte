@@ -115,7 +115,7 @@ function submit() {
 						loading="{loading}"
 						disabled="{disabled}"
 						on:click="{() =>
-							(window.location.href = `https://www.mayar.shop/checkout/cart/${cart?.cartId}`)}">
+							(window.location.href = `https://${cart.domain}/checkout/cart/${cart?.cartId}`)}">
 						<span>{text}</span>
 
 						{#if showNextIcon}
@@ -138,7 +138,7 @@ function submit() {
 						loading="{loading}"
 						disabled="{disabled}"
 						on:click="{() =>
-							(window.location.href = `https://www.mayar.shop/checkout/cart/${cart?.cartId}`)}">
+							(window.location.href = `https://${cart.domain}/checkout/cart/${cart?.cartId}`)}">
 						<span>{text}</span>
 
 						{#if showNextIcon}
@@ -167,7 +167,7 @@ function submit() {
 						loading="{loading}"
 						disabled="{disabled}"
 						on:click="{() =>
-							(window.location.href = `https://www.mayar.shop/checkout/cart/${cart?.cartId}`)}">
+							(window.location.href = `https://${cart.domain}/checkout/cart/${cart?.cartId}`)}">
 						<span>{text}</span>
 
 						{#if showNextIcon}
@@ -191,7 +191,7 @@ function submit() {
 						loading="{loading}"
 						disabled="{disabled}"
 						on:click="{() =>
-							(window.location.href = `https://www.mayar.shop/checkout/cart/${cart?.cartId}`)}">
+							(window.location.href = `https://${cart.domain}/checkout/cart/${cart?.cartId}`)}">
 						<span>{text}</span>
 
 						{#if showNextIcon}
