@@ -30,7 +30,8 @@ export const load: PageServerLoad = async ({ url, request, locals, cookies }) =>
 	} finally {
 		loading = false
 	}
-	console.log({ loadingCart: loading, cart })
+	// console.log({ loadingCart: loading, cart })
+	// console.log(JSON.stringify(cart.items))
 	return { loadingCart: loading, cart }
 }
 

@@ -316,7 +316,13 @@ async function getCoupons() {
 													href="/product/{item?.product.id}"
 													aria-label="Click to route product details"
 													class="flex-1 cursor-pointer text-base font-medium text-gray-600 hover:underline sm:text-lg">
-													{item?.product.name}
+													<p>
+														{item?.product.name} |
+														<span class="text-xs">
+															{JSON.parse(item?.product.order.variant).details.find(
+																(i) => i.sku === item?.product.variant.sku
+															).option}</span>
+													</p>
 												</a>
 
 												{#if $page?.data?.store?.isFnb && item.foodType}
